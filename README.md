@@ -61,6 +61,15 @@ A pasta `Dailys/` contém os registros das reuniões diárias (Daily Scrums) da 
 - Planejamento das próximas atividades
 - Acompanhamento do progresso do projeto
 
+#### 🏃‍♂️ Scrum
+A pasta `Scrum/` armazena todos os artefatos e documentos relacionados à metodologia Scrum, incluindo:
+- Product Backlog
+- Sprint Planning
+- Sprint Review
+- Burndown Charts
+- Retrospectivas
+- Outros documentos da metodologia ágil
+
 ### 🚀 Tecnologias Utilizadas
 
 - **Frontend**: React + TypeScript
