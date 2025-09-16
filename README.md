@@ -63,10 +63,20 @@ A pasta `Dailys/` contém os registros das reuniões diárias (Daily Scrums) da 
 
 #### 🏃‍♂️ Scrum
 A pasta `Scrum/` armazena todos os artefatos e documentos relacionados à metodologia Scrum, incluindo:
-- Product Backlog
+
+**📋 Product Backlog**
+- `Product Backlog/Product Backlog Completo.pdf` - Documento completo do Product Backlog com todas as histórias de usuário e requisitos do projeto
+
+**🏃‍♂️ Sprints**
+- `Sprints/Sprint 1/` - Pasta contendo os artefatos do Sprint 1
+  - `Sprint Backlog/Sprint Backlog.pdf` - Documento do Sprint Backlog com as tarefas selecionadas para o Sprint 1
+
+**📊 Burndown Chart**
+- `Burndown Chart/Sprint 1/BurndownIdeal.png` - Gráfico de burndown ideal para acompanhamento do progresso do Sprint 1
+
+**Outros artefatos Scrum:**
 - Sprint Planning
 - Sprint Review
-- Burndown Charts
 - Retrospectivas
 - Outros documentos da metodologia ágil
 
