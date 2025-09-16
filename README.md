@@ -12,7 +12,7 @@ Sistema web desenvolvido para visualização e disseminação de dados limnológ
 | 📍 Instituição | FATEC Jacareí |
 | 📚 Curso | DSM - 2º Semestre 2025 |
 | 🔄 Metodologia | Aprendizagem Baseada em Projetos (ABP) |
-| 👤 Focal Point | A definir |
+| 👤 Focal Point | Arley Ferreira de Souza |
 | 🤝 Parceiro | INPE - Laboratório de Instrumentação de Sistemas Aquáticos (labISA) |
 | 📅 Kick off | 11/09/2025 às 19h30 |
 | 📊 Status | Em desenvolvimento |
@@ -88,6 +88,125 @@ A pasta `Scrum/` armazena todos os artefatos e documentos relacionados à metodo
 - **Containerização**: Docker
 - **Metodologia**: Scrum/Agile
 
+### 🏗️ Arquitetura e Estrutura Técnica
+
+#### 📂 Estrutura de Pastas
+
+A organização do projeto segue uma separação clara entre bancos de dados (scripts e dados), servidor (código da aplicação) e configurações gerais.
+
+```bash
+app/
+├── balcar-campanha/            
+│   ├── csv/                       # Arquivos de dados (CSV) carregados nas tabelas
+│   ├── copy-table.sql             # Script SQL para importar os arquivos CSV para o banco
+│   ├── create-table.sql           # Script SQL para criar a estrutura das tabelas
+│   └── balcar-campanha-modelo.xml # Modelo conceitual do banco, visualizável no DBDesigner
+│  
+├── furnas-campanha/
+│   ├── csv/                       # Arquivos de dados (CSV) carregados nas tabelas
+│   ├── copy-table.sql             # Script SQL para importar os arquivos CSV para o banco
+│   ├── create-table.sql           # Script SQL para criar a estrutura das tabelas
+│   └── furnas-campanha-modelo.xml # Modelo conceitual do banco, visualizável no DBDesigner
+│   
+├── sima/
+│   ├── csv/                       # Arquivos de dados (CSV) específicos do SIMA
+│   ├── copy-table.sql             # Script SQL para importação dos CSV
+│   ├── create-table.sql           # Script SQL para criação das tabelas
+│   └── sima-modelo.xml            # Modelo conceitual do banco SIMA (para DBDesigner)
+│ 
+├── server/
+│   ├── src/                       # Código-fonte da aplicação
+│   │   ├── configs/               # Configurações, como conexão com banco de dados
+│   │   ├── controllers/           # Lógica de controle (recebem requisições, chamam serviços)
+│   │   ├── routes/                # Definição das rotas da API
+│   │   └── index.ts               # Arquivo principal que inicializa o servidor
+│   ├── Dockerfile                 # Receita para construção da imagem Docker do servidor
+│   ├── package.json               # Dependências e scripts NPM
+│   └── tsconfig.json              # Configurações do compilador TypeScript
+│
+├── front/                        # Front-end React + Vite + styled-components
+│   ├── src/
+│   │   ├── api/                  # Consumo da API (axios)
+│   │   ├── components/           # Componentes reutilizáveis
+│   │   ├── pages/                # Páginas (ex.: SimaPage)
+│   │   └── styles/               # GlobalStyle + ThemeProvider
+│   ├── Dockerfile
+│   ├── vite.config.ts
+│   └── package.json
+│
+├── .github/workflows/ci.yml       # Pipeline de Integração Contínua
+└── docker-compose.dev.yml         # Definições dos serviços Docker para ambiente de desenvolvimento
+```
+
+#### 🔑 Configurações Técnicas
+
+**Back-end (`server/`)**
+- Node.js + Express + TypeScript
+- Estrutura em camadas (configs, controllers, routes)
+- Conexão com múltiplos bancos via `pg.Pool`
+- Middlewares: JSON parser, erro global, CORS configurado
+- ESLint + Prettier para padronização de código
+- Dockerfile com hot reload (ts-node-dev)
+
+**Front-end (`front/`)**
+- React + Vite + TypeScript
+- styled-components com `ThemeProvider` global
+- GlobalStyle para reset de estilos
+- Barra Brasil + Menu responsivo
+- Estrutura organizada (`api/`, `components/`, `pages/`, `styles/`)
+- Axios configurado com `VITE_SERVER_PORT`
+
+**Banco de Dados**
+- PostgreSQL 17 (um container por domínio: furnas-campanha, sima, balcar-campanha)
+- Scripts SQL para `CREATE TABLE` e `COPY FROM CSV`
+- Volumes persistentes para dados
+- Cada banco acessível em uma porta distinta (5433, 5434, 5435)
+
+**CI/CD**
+- GitHub Actions (`.github/workflows/ci.yml`)
+- Pipeline roda automaticamente em push e pull requests para a branch `main`
+- Estrutura de Jobs: `server-ci`, `front-ci` e `docker-ci`
+
+### ▶️ Como Executar o Projeto
+
+#### Com Docker (Recomendado)
+```bash
+# Subir todos os containers
+docker compose -f docker-compose.dev.yml up --build -d
+
+# Parar os containers
+docker compose -f docker-compose.dev.yml down
+```
+
+#### Desenvolvimento Local
+```bash
+# Back-end
+cd server
+npm install
+npm run dev
+# API disponível em: http://localhost:3001
+
+# Front-end
+cd front
+npm install
+npm run dev
+# App disponível em: http://localhost:3002
+```
+
+### 🌐 Acessando a Aplicação
+
+- **Front-end (React)**: http://localhost:3002
+- **Back-end (API Node)**: http://localhost:3001
+  - Exemplo: http://localhost:3001/sima/sima/all?page=1&limit=20
+
+### 🛠️ Boas Práticas Aplicadas
+
+- Separação clara de camadas (DB / API / Front)
+- Containers independentes para cada banco
+- Hot reload para server e front em dev
+- ESLint + Prettier (garantindo padronização de código)
+- CI no GitHub Actions
+
 </details>
 
 ## 👥 Nossa Equipe
@@ -113,4 +232,4 @@ A pasta `Scrum/` armazena todos os artefatos e documentos relacionados à metodo
 
 | **Professor** |
 |---------------|
-| **Focal Point** | A definir |
+| **Focal Point** | Arley Ferreira de Souza |
