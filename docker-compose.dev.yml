@@ -1,3 +1,5 @@
+version: '3'
+
 services:
   postgres-furnas-campanha:
     image: postgres:17-alpine
@@ -68,25 +70,21 @@ services:
     environment:
       PORT: 3000
       HOST_PORT: 3001
-
       DB_FURNAS_HOST: postgres-furnas-campanha
       DB_FURNAS_PORT: 5432
       DB_FURNAS_USER: postgres
       DB_FURNAS_PASSWORD: postgres
       DB_FURNAS_NAME: bdfurnas-campanha
-
       DB_SIMA_HOST: postgres-sima
       DB_SIMA_PORT: 5432
       DB_SIMA_USER: postgres
       DB_SIMA_PASSWORD: postgres
       DB_SIMA_NAME: bdsima
-
       DB_BALCAR_HOST: postgres-balcar-campanha
       DB_BALCAR_PORT: 5432
       DB_BALCAR_USER: postgres
       DB_BALCAR_PASSWORD: postgres
       DB_BALCAR_NAME: bdbalcar-campanha
-
       PAGE_SIZE: 20
       LOG_LEVEL: debug
       CORS_ORIGIN: http://localhost:3002
@@ -109,13 +107,23 @@ services:
       - server-app
     environment:
       VITE_SERVER_PORT: 3001
-      CHOKIDAR_USEPOLLING: "true"   # garante hot reload dentro do container
+      CHOKIDAR_USEPOLLING: "true"
     volumes:
-      - ./front:/usr/src/app        # código local
-      - /usr/src/app/node_modules   # mantém dependências no container
+      - ./front:/usr/src/app
+      - /usr/src/app/node_modules
     command: npm run dev -- --host
     ports:
       - "3002:5173"
+
+  watchtower:
+    image: containrrr/watchtower
+    container_name: watchtower
+    restart: always
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - WATCHTOWER_POLL_INTERVAL=3600   # Intervalo de 1 hora para checar por atualizações
+      - WATCHTOWER_TRACE=true            # Habilita o log de trace para ajudar no debug
 
 volumes:
   furnas_campanha_data:
