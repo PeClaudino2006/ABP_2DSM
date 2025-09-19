@@ -77,7 +77,7 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
 
     res.status(500).json({
       success: false,
-      error: "Erro ao realizar a operação.",
+      error: "Erro ao realizar a operação!",
     });
   }
 };
