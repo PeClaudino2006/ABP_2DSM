@@ -7,7 +7,7 @@ const API_BASE = `http://localhost:${SERVER_PORT}`;
 
 export const getSima = async (
   page: number = 1,
-  limit: number = 1 ,
+  limit: number = 1,
 ): Promise<PaginatedResponse<Sima>> => {
   const response = await axios.get<PaginatedResponse<Sima>>(
     `${API_BASE}/sima/sima/all?page=${page}&limit=${limit}`,
