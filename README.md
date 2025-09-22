@@ -12,7 +12,7 @@ Sistema web desenvolvido para visualização e disseminação de dados limnológ
 | 📍 Instituição | FATEC Jacareí |
 | 📚 Curso | DSM - 2º Semestre 2025 |
 | 🔄 Metodologia | Aprendizagem Baseada em Projetos (ABP) |
-| 👤 Focal Point | Arley Ferreira de Souza |
+| 👤 Focal Point | André Olimpio |
 | 🤝 Parceiro | INPE - Laboratório de Instrumentação de Sistemas Aquáticos (labISA) |
 | 📅 Kick off | 11/09/2025 às 19h30 |
 | 📊 Status | Em desenvolvimento |
@@ -232,4 +232,4 @@ npm run dev
 
 | **Professor** |
 |---------------|
-| **Focal Point** | Arley Ferreira de Souza |
+| **Focal Point** | André Olimpio |
