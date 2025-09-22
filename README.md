@@ -230,6 +230,6 @@ npm run dev
 
 ## 👨‍🏫 Coordenação e Orientação
 
-| **Professor** |
+| **Focal Point** |
 |---------------|
-| **Focal Point** | André Olimpio |
+| **André Olimpio** | 
