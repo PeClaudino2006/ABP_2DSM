@@ -3,7 +3,8 @@ import { getSima } from "../api/simaApi";
 import type { Sima, PaginatedResponse } from "../types/sima";
 import styled from "styled-components";
 
-// Container principal da página
+// --- Styled Components (mesmos do seu código anterior) ---
+
 const PageContainer = styled.div`
   flex: 1;
   width: 100%;
@@ -11,7 +12,6 @@ const PageContainer = styled.div`
   background-color: #f3f4f6;
 `;
 
-// Título
 const Title = styled.h1`
   font-size: 1.5rem;
   font-weight: bold;
@@ -19,7 +19,6 @@ const Title = styled.h1`
   color: #111827;
 `;
 
-// Tabela
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
@@ -49,7 +48,6 @@ const Tr = styled.tr`
   }
 `;
 
-// Paginação
 const Pagination = styled.div`
   display: flex;
   justify-content: center;
@@ -72,15 +70,36 @@ const Button = styled.button<{ disabled?: boolean }>`
   }
 `;
 
+const DateInputs = styled.div`
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  align-items: center;
+
+  input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+  }
+`;
+
 function SimaPage() {
   const [data, setData] = useState<Sima[]>([]);
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+  const [startDate, setStartDate] = useState("2004-01-01"); // data inicial padrão
+  const [endDate, setEndDate] = useState("2004-12-31"); // data final padrão
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response: PaginatedResponse<Sima> = await getSima(page, 10);
+        const response: PaginatedResponse<Sima> = await getSima({
+          page,
+          limit: 20,
+          startDate,
+          endDate,
+        });
+
         setData(response.data);
         setTotalPages(response.totalPages);
       } catch (error) {
@@ -89,12 +108,40 @@ function SimaPage() {
     };
 
     fetchData();
-  }, [page]);
+  }, [page, startDate, endDate]);
 
   return (
     <PageContainer>
       <Title>Lista de Registros - SIMA</Title>
 
+      {/* 📅 Filtros de data */}
+      <DateInputs>
+        <label>
+          Início:
+          <input
+            type="date"
+            value={startDate}
+            onChange={(e) => {
+              setStartDate(e.target.value);
+              setPage(1); // resetar a paginação ao mudar o filtro
+            }}
+          />
+        </label>
+
+        <label>
+          Fim:
+          <input
+            type="date"
+            value={endDate}
+            onChange={(e) => {
+              setEndDate(e.target.value);
+              setPage(1); // resetar a paginação ao mudar o filtro
+            }}
+          />
+        </label>
+      </DateInputs>
+
+      {/* 🧾 Tabela de dados */}
       <Table>
         <thead>
           <tr>
@@ -110,7 +157,7 @@ function SimaPage() {
             <Tr key={row.idsima}>
               <Td>{row.idsima}</Td>
               <Td>{row.idestacao}</Td>
-              <Td>{row.datahora}</Td>
+              <Td>{new Date(row.datahora).toLocaleString("pt-BR")}</Td>
               <Td>{row.tempar ?? "-"}</Td>
               <Td>{row.precipitacao ?? "-"}</Td>
             </Tr>
@@ -118,6 +165,7 @@ function SimaPage() {
         </tbody>
       </Table>
 
+      {/* 📄 Paginação */}
       <Pagination>
         <Button disabled={page === 1} onClick={() => setPage(page - 1)}>
           Anterior
@@ -125,7 +173,10 @@ function SimaPage() {
         <span>
           Página {page} de {totalPages}
         </span>
-        <Button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
+        <Button
+          disabled={page === totalPages}
+          onClick={() => setPage(page + 1)}
+        >
           Próxima
         </Button>
       </Pagination>
