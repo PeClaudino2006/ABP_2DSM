@@ -18,24 +18,27 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
 
     // Validações
     if (!page || page < 1) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Parâmetro 'page' inválido.",
       });
+      return;
     }
 
     if (!limit || limit < 1) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Parâmetro 'limit' inválido.",
       });
+      return;
     }
 
     if (!startDate || !endDate) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Parâmetros 'startDate' e 'endDate' são obrigatórios.",
       });
+      return;
     }
 
     const offset = (page - 1) * limit;

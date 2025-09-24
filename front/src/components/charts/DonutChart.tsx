@@ -102,7 +102,7 @@ export default function DonutChart({
   const radius = size / 2 - thickness / 2;
   const circumference = 2 * Math.PI * radius;
 
-  let offset = 0;
+  const offset = 0;
 
   return (
     <ChartContainer>

@@ -99,15 +99,6 @@ const Label = styled.div`
   font-weight: 500;
 `;
 
-const YAxisLabel = styled.div`
-  position: absolute;
-  left: -10px;
-  font-size: 0.75rem;
-  color: ${({ theme }) => theme.colors.text.muted};
-  transform: rotate(-90deg);
-  transform-origin: center;
-`;
-
 export default function BarChart({ data, height = 300, max, showValues = true }: BarChartProps) {
   const maxValue = max ?? Math.max(...data.map((d) => d.value), 1);
 
