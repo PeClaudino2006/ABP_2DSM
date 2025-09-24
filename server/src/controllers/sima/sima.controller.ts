@@ -50,14 +50,14 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
        WHERE datahora >= $3 AND datahora < $4
        ORDER BY datahora DESC
        LIMIT $1 OFFSET $2`,
-      [limit, offset, startDateTime, endDateTime]
+      [limit, offset, startDateTime, endDateTime],
     );
 
     // Total de registros dentro do filtro
     const countResult = await simaPool.query(
       `SELECT COUNT(*) FROM tbsima
        WHERE datahora >= $1 AND datahora < $2`,
-      [startDateTime, endDateTime]
+      [startDateTime, endDateTime],
     );
 
     const total = parseInt(countResult.rows[0].count, 10);

@@ -6,10 +6,18 @@ declare module "styled-components" {
     colors: {
       primary: string;
       primaryDark: string;
+      primaryLight: string;
       background: string;
+      backgroundImage: string;
       text: {
         base: string;
         inverse: string;
+        muted: string;
+      };
+      card: {
+        background: string;
+        border: string;
+        shadow: string;
       };
     };
     fonts: {
@@ -32,3 +40,5 @@ declare module "styled-components" {
     };
   }
 }
+
+export {};

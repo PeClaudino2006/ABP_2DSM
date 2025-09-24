@@ -1,0 +1,302 @@
+import styled from "styled-components";
+import { Filter } from "lucide-react";
+
+// --- Styled Components ---
+
+const PageContainer = styled.div`
+  min-height: 100vh;
+  background: #ffffff;
+`;
+
+const MainContent = styled.main`
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+`;
+
+const PageTitle = styled.h2`
+  color: #0f172a;
+  font-size: 2rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 0.5rem;
+`;
+
+const PageSubtitle = styled.p`
+  color: #475569;
+  text-align: center;
+  margin: 0 0 1.5rem;
+`;
+
+const ContentGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  height: 70vh;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+`;
+
+const DataPanel = styled.div`
+  background: ${({ theme }) => theme.colors.card.background};
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: ${({ theme }) => theme.colors.card.shadow};
+  border: 1px solid ${({ theme }) => theme.colors.card.border};
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(30, 64, 175, 0.2);
+    border-color: rgba(30, 64, 175, 0.25);
+  }
+`;
+
+const FilterButton = styled.button`
+  background: ${({ theme }) => theme.colors.primary};
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+  margin-bottom: 1.5rem;
+
+  &:hover {
+    background: ${({ theme }) => theme.colors.primaryDark};
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(30, 64, 175, 0.3);
+  }
+`;
+
+const DataTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(5px);
+`;
+
+const TableHeader = styled.th`
+  text-align: left;
+  padding: 1rem 1.25rem;
+  background-color: ${({ theme }) => theme.colors.primary};
+  color: white;
+  font-weight: 600;
+  font-size: 0.875rem;
+`;
+
+const TableCell = styled.td`
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  color: ${({ theme }) => theme.colors.text.base};
+  font-size: 0.875rem;
+`;
+
+const TableRow = styled.tr`
+  &:nth-child(even) {
+    background-color: rgba(249, 250, 251, 0.5);
+  }
+`;
+
+const MapPanel = styled.div`
+  background: ${({ theme }) => theme.colors.card.background};
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: ${({ theme }) => theme.colors.card.shadow};
+  border: 1px solid ${({ theme }) => theme.colors.card.border};
+  backdrop-filter: blur(10px);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(30, 64, 175, 0.2);
+    border-color: rgba(30, 64, 175, 0.25);
+  }
+`;
+
+const MapContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  background: #f0f0f0;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  background-image:
+    linear-gradient(45deg, #ccc 25%, transparent 25%),
+    linear-gradient(-45deg, #ccc 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #ccc 75%),
+    linear-gradient(-45deg, transparent 75%, #ccc 75%);
+  background-size: 20px 20px;
+  background-position:
+    0 0,
+    0 10px,
+    10px -10px,
+    -10px 0px;
+`;
+
+const MapPlaceholder = styled.div`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: #6b7280;
+  font-size: 1.1rem;
+  font-weight: 500;
+`;
+
+const MapMarker = styled.div<{ x: number; y: number }>`
+  position: absolute;
+  left: ${(props) => props.x}%;
+  top: ${(props) => props.y}%;
+  width: 20px;
+  height: 20px;
+  background: #ef4444;
+  border-radius: 50%;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: scale(1.2);
+    background: #dc2626;
+  }
+
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: -8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #ef4444;
+  }
+`;
+
+const MapLabel = styled.div<{ x: number; y: number }>`
+  position: absolute;
+  left: ${(props) => props.x}%;
+  top: ${(props) => props.y}%;
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  pointer-events: none;
+  transform: translate(-50%, -100%);
+  margin-top: -5px;
+`;
+
+function MapaInterativoPage() {
+  return (
+    <PageContainer>
+      <MainContent>
+        <PageTitle>Mapa Interativo</PageTitle>
+        <PageSubtitle>Visualize as estações e registros no mapa</PageSubtitle>
+
+        <ContentGrid>
+          <DataPanel>
+            <FilterButton>
+              <Filter size={16} />
+              Filtro
+            </FilterButton>
+
+            <DataTable>
+              <thead>
+                <tr>
+                  <TableHeader>ID</TableHeader>
+                  <TableHeader>Data e Hora</TableHeader>
+                  <TableHeader>Temp</TableHeader>
+                </tr>
+              </thead>
+              <tbody>
+                <TableRow>
+                  <TableCell>123</TableCell>
+                  <TableCell>22:10</TableCell>
+                  <TableCell>22°</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>124</TableCell>
+                  <TableCell>23:10</TableCell>
+                  <TableCell>21°</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>125</TableCell>
+                  <TableCell>00:10</TableCell>
+                  <TableCell>20°</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>126</TableCell>
+                  <TableCell>01:10</TableCell>
+                  <TableCell>19°</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell>127</TableCell>
+                  <TableCell>02:10</TableCell>
+                  <TableCell>18°</TableCell>
+                </TableRow>
+              </tbody>
+            </DataTable>
+          </DataPanel>
+
+          <MapPanel>
+            <MapContainer>
+              <MapPlaceholder>
+                Mapa Interativo
+                <br />
+                <small>Visualização dos dados de monitoramento</small>
+              </MapPlaceholder>
+
+              {/* Marcadores simulados */}
+              <MapMarker x={30} y={40} />
+              <MapLabel x={30} y={40}>
+                Estação 1
+              </MapLabel>
+
+              <MapMarker x={60} y={30} />
+              <MapLabel x={60} y={30}>
+                Estação 2
+              </MapLabel>
+
+              <MapMarker x={45} y={60} />
+              <MapLabel x={45} y={60}>
+                Estação 3
+              </MapLabel>
+
+              <MapMarker x={75} y={50} />
+              <MapLabel x={75} y={50}>
+                Estação 4
+              </MapLabel>
+            </MapContainer>
+          </MapPanel>
+        </ContentGrid>
+      </MainContent>
+    </PageContainer>
+  );
+}
+
+export default MapaInterativoPage;

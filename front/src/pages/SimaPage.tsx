@@ -8,43 +8,64 @@ import styled from "styled-components";
 const PageContainer = styled.div`
   flex: 1;
   width: 100%;
-  padding: 1.5rem;
-  background-color: #f3f4f6;
+  padding: 2rem;
+  background: #ffffff;
 `;
 
 const Title = styled.h1`
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-  color: #111827;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: #0f172a;
+  text-align: center;
+`;
+
+const Subtitle = styled.p`
+  color: #475569;
+  text-align: center;
+  margin: 0 0 1.5rem;
 `;
 
 const Table = styled.table`
   width: 100%;
   border-collapse: collapse;
-  background: white;
-  border-radius: 6px;
+  background: ${({ theme }) => theme.colors.card.background};
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  box-shadow: ${({ theme }) => theme.colors.card.shadow};
+  border: 1px solid ${({ theme }) => theme.colors.card.border};
+  backdrop-filter: blur(10px);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 40px rgba(30, 64, 175, 0.2);
+    border-color: rgba(30, 64, 175, 0.25);
+  }
 `;
 
 const Th = styled.th`
   text-align: left;
-  padding: 0.75rem 1rem;
-  background-color: #2563eb;
+  padding: 1rem 1.25rem;
+  background-color: ${({ theme }) => theme.colors.primary};
   color: white;
   font-weight: 600;
+  font-size: 0.875rem;
 `;
 
 const Td = styled.td`
-  padding: 0.75rem 1rem;
-  border-bottom: 1px solid #e5e7eb;
-  color: #374151;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid rgba(229, 231, 235, 0.5);
+  color: ${({ theme }) => theme.colors.text.base};
+  font-size: 0.875rem;
 `;
 
 const Tr = styled.tr`
   &:nth-child(even) {
-    background-color: #f9fafb;
+    background-color: rgba(249, 250, 251, 0.5);
   }
 `;
 
@@ -57,16 +78,19 @@ const Pagination = styled.div`
 `;
 
 const Button = styled.button<{ disabled?: boolean }>`
-  background-color: ${(props) => (props.disabled ? "#9ca3af" : "#2563eb")};
+  background-color: ${(props) => (props.disabled ? "#9ca3af" : props.theme.colors.primary)};
   color: white;
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
   border: none;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
-  transition: background 0.2s;
+  font-weight: 600;
+  transition: all 0.2s ease;
 
   &:hover {
-    background-color: ${(props) => (props.disabled ? "#9ca3af" : "#1d4ed8")};
+    background-color: ${(props) => (props.disabled ? "#9ca3af" : props.theme.colors.primaryDark)};
+    transform: ${(props) => (props.disabled ? "none" : "translateY(-2px)")};
+    box-shadow: ${(props) => (props.disabled ? "none" : "0 8px 20px rgba(30, 64, 175, 0.3)")};
   }
 `;
 
@@ -113,6 +137,7 @@ function SimaPage() {
   return (
     <PageContainer>
       <Title>Lista de Registros - SIMA</Title>
+      <Subtitle>Consulte e filtre os dados coletados pelo sistema</Subtitle>
 
       {/* 📅 Filtros de data */}
       <DateInputs>
@@ -173,10 +198,7 @@ function SimaPage() {
         <span>
           Página {page} de {totalPages}
         </span>
-        <Button
-          disabled={page === totalPages}
-          onClick={() => setPage(page + 1)}
-        >
+        <Button disabled={page === totalPages} onClick={() => setPage(page + 1)}>
           Próxima
         </Button>
       </Pagination>

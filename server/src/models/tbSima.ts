@@ -72,7 +72,7 @@ export class TbSima {
     corr_leste: number | null = null,
     co2_low: number | null = null,
     co2_high: number | null = null,
-    precipitacao: number | null = null
+    precipitacao: number | null = null,
   ) {
     this.idsima = idsima;
     this.idestacao = idestacao;

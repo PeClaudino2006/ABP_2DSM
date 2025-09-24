@@ -1,32 +1,21 @@
-# Etapa 1: build da aplicação
-FROM node:22-alpine AS build
+# Dockerfile para desenvolvimento
+FROM node:22-alpine
 
 # Criar diretório de trabalho
 WORKDIR /usr/src/app
 
-# Copiar package.json e instalar dependências
+# Copiar package.json e package-lock.json
 COPY package*.json ./
+
+# Instalar dependências (incluindo devDependencies)
 RUN npm install
 
-# Copiar o restante do código
+# Copiar o código fonte
 COPY . .
 
-# Compilar TypeScript
-RUN npm run build
-
-# Etapa 2: imagem final
-FROM node:22-alpine
-
-WORKDIR /usr/src/app
-
-# Copiar apenas os arquivos necessários da etapa de build
-COPY --from=build /usr/src/app/package*.json ./
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY --from=build /usr/src/app/dist ./dist
-
-# Expor a porta (ajuste se necessário)
+# Expor a porta
 EXPOSE 3000
 
-# Comando de inicialização
-CMD ["node", "dist/index.js"]
+# Comando padrão para desenvolvimento
+CMD ["npx", "ts-node-dev", "--respawn", "--transpile-only", "--ignore-watch", "node_modules", "--poll", "src/index.ts"]
 

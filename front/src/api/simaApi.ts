@@ -10,7 +10,7 @@ interface GetSimaParams {
   page: number;
   limit: number;
   startDate: string; // formato ISO: 'YYYY-MM-DD'
-  endDate: string;   // formato ISO: 'YYYY-MM-DD'
+  endDate: string; // formato ISO: 'YYYY-MM-DD'
 }
 
 export const getSima = async ({
@@ -28,17 +28,14 @@ export const getSima = async ({
   }
 
   // Chamada usando `params` (mais seguro)
-  const response = await axios.get<PaginatedResponse<Sima>>(
-    `${API_BASE}/sima/sima/all`,
-    {
-      params: {
-        page,
-        limit,
-        startDate,
-        endDate,
-      },
-    }
-  );
+  const response = await axios.get<PaginatedResponse<Sima>>(`${API_BASE}/sima/sima/all`, {
+    params: {
+      page,
+      limit,
+      startDate,
+      endDate,
+    },
+  });
 
   return response.data;
 };
