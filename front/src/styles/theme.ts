@@ -2,12 +2,21 @@ import type { DefaultTheme } from "styled-components";
 
 const theme: DefaultTheme = {
   colors: {
-    primary: "#2563eb",
-    primaryDark: "#1e40af",
-    background: "#f9fafb",
+    primary: "#1e40af", // azul INPE oficial
+    primaryDark: "#1e3a8a",
+    primaryLight: "#3b82f6",
+    background: "#ffffff", // fundo branco
+    backgroundImage:
+      "linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(59, 130, 246, 0.02) 100%)",
     text: {
-      base: "#111827",
-      inverse: "#ffffff", // <-- agora existe
+      base: "#1e293b", // slate-800
+      inverse: "#ffffff",
+      muted: "#64748b", // slate-500
+    },
+    card: {
+      background: "rgba(255, 255, 255, 0.95)",
+      border: "rgba(30, 64, 175, 0.15)",
+      shadow: "0 8px 32px rgba(30, 64, 175, 0.15)",
     },
   },
   fonts: {

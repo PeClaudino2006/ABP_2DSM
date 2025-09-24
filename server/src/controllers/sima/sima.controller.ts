@@ -18,24 +18,27 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
 
     // Validações
     if (!page || page < 1) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Parâmetro 'page' inválido.",
       });
+      return;
     }
 
     if (!limit || limit < 1) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Parâmetro 'limit' inválido.",
       });
+      return;
     }
 
     if (!startDate || !endDate) {
-      return res.status(400).json({
+      res.status(400).json({
         success: false,
         error: "Parâmetros 'startDate' e 'endDate' são obrigatórios.",
       });
+      return;
     }
 
     const offset = (page - 1) * limit;
@@ -50,14 +53,14 @@ export const getAll = async (req: Request, res: Response): Promise<void> => {
        WHERE datahora >= $3 AND datahora < $4
        ORDER BY datahora DESC
        LIMIT $1 OFFSET $2`,
-      [limit, offset, startDateTime, endDateTime]
+      [limit, offset, startDateTime, endDateTime],
     );
 
     // Total de registros dentro do filtro
     const countResult = await simaPool.query(
       `SELECT COUNT(*) FROM tbsima
        WHERE datahora >= $1 AND datahora < $2`,
-      [startDateTime, endDateTime]
+      [startDateTime, endDateTime],
     );
 
     const total = parseInt(countResult.rows[0].count, 10);
